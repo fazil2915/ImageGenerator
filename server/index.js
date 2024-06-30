@@ -1,6 +1,7 @@
 import express from "express"
 import * as dotenv from "dotenv"
 import cors from "cors"
+import connectDb from "./models/connect.js"
 
 dotenv.config();
 
@@ -12,6 +13,17 @@ app.get('/',async (req,res)=>{
     res.send("hai there")
 })
 
-app.listen(3000,()=>{
-    console.log("server running on port http://localhost:3000")
-})
+const startServer=async()=>{
+
+    try{
+        connectDb(process.env.MONGO_URL)
+        app.listen(3000,()=>{
+            console.log("server running on port http://localhost:3000")
+        })
+    }
+    catch(err){
+       console.log(err)
+    }
+
+}
+startServer()
